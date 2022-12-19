@@ -47,7 +47,7 @@ jobs:
           MATRIX_MAX_TEST_GROUPS: 5
           VAULT_VERSION: ${{ needs.set-product-version.outputs.vault-version }}
         run: |
-          echo "build-date=$(make crt-get-date)" >> $GITHUB_OUTPUT
+          echo "build-date=$(make ci-get-date)" >> $GITHUB_OUTPUT
           echo "package-name=${{ env.PKG_NAME }}" >> $GITHUB_OUTPUT
           echo "matrix-test-group=$(make ci-get-matrix-group-id)" >> $GITHUB_OUTPUT
           echo "go-version=$(cat ./.go-version)" >> $GITHUB_OUTPUT
@@ -142,9 +142,9 @@ jobs:
   build-docker:
     name: Build Vault Docker
     needs:
-      - set-product-version
       - product-metadata
       - build-linux
+      - set-product-version
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -159,7 +159,7 @@ jobs:
           version: ${{ env.version }}
           target: default
           arch: ${{ matrix.arch }}
-          zip_artifact_name: ${{ env.PKG_NAME }}_${{ needs.set-product-version.outputs.vault-version }}_linux_${{ matrix.arch }}.zip
+          zip_artifact_name: ${{ env.PKG_NAME }}_${{ env.version }}_linux_${{ matrix.arch }}.zip
           tags: |
             docker.io/hashicorp/${{ env.repo }}:${{ env.version }}
             public.ecr.aws/hashicorp/${{ env.repo }}:${{ env.version }}
@@ -167,9 +167,9 @@ jobs:
   build-ubi:
      name: Build Vault Red Hat UBI
      needs:
-       - set-product-version
        - product-metadata
        - build-linux
+       - set-product-version
      runs-on: ubuntu-latest
      strategy:
        matrix:
@@ -184,7 +184,7 @@ jobs:
            version: ${{ env.version }}
            target: ubi
            arch: ${{ matrix.arch }}
-           zip_artifact_name: ${{ env.PKG_NAME }}_${{ needs.set-product-version.outputs.vault-version }}_linux_${{ matrix.arch }}.zip
+           zip_artifact_name: ${{ env.PKG_NAME }}_${{ env.version }}_linux_${{ matrix.arch }}.zip
            redhat_tag: quay.io/redhat-isv-containers/5f89bb5e0b94cf64cfeb500a:${{ env.version }}-ubi
 
   test:
@@ -197,9 +197,9 @@ jobs:
     # contributors in order to protect the secrets integrity.
     if: "! github.event.pull_request.head.repo.fork"
     needs:
-      - set-product-version
       - product-metadata
       - build-linux
+      - set-product-version
     uses: ./.github/workflows/enos-run.yml
     strategy:
       fail-fast: false
@@ -230,9 +230,9 @@ jobs:
     # contributors in order to protect the secrets integrity.
     if: "! github.event.pull_request.head.repo.fork"
     needs:
-      - set-product-version
       - product-metadata
       - build-docker
+      - set-product-version
     uses: ./.github/workflows/enos-run-k8s.yml
     with:
       artifact-build-date: ${{ needs.product-metadata.outputs.build-date }}
