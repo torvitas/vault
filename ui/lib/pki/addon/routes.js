@@ -3,6 +3,7 @@ import buildRoutes from 'ember-engines/routes';
 export default buildRoutes(function () {
   this.route('overview');
   this.route('configuration', function () {
+    this.route('index', { path: '/' });
     this.route('tidy');
     this.route('create');
     this.route('edit');
@@ -40,7 +41,7 @@ export default buildRoutes(function () {
     this.route('index', { path: '/' });
     this.route('create');
     this.route('import');
-    this.route('key', { path: '/:key_ref' }, function () {
+    this.route('key', { path: '/:key_id' }, function () {
       this.route('details');
       this.route('edit');
     });

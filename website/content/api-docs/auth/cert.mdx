@@ -56,6 +56,11 @@ Sets a CA cert and associated parameters in a role name.
   Organizational Units (OU) in the client certificate with a [globbed pattern](https://github.com/ryanuber/go-glob/blob/master/README.md#example). Value is
   a comma-separated list of OU patterns. Authentication requires at least one
   OU matching at least one pattern. If not set, defaults to allowing all OUs.
+- `allowed_metadata_extensions` `(array:[])` - A comma separated string or
+  array of oid extensions. Upon successful authentication, these extensions
+  will be added as metadata if they are present in the certificate. The
+  metadata key will be the string consisting of the oid numbers separated
+  by a dash (-) instead of a dot (.) to allow usage in ACL templates.
 - `required_extensions` `(string: "" or array: [])` - Require specific Custom
   Extension OIDs to exist and match the pattern. Value is a comma separated
   string or array of `oid:value`. Expects the extension value to be some type
@@ -73,7 +78,8 @@ Sets a CA cert and associated parameters in a role name.
   been revoked.
 - `ocsp_query_all_servers` `(bool: false)` - If set to true, rather than accepting 
   the first successful OCSP response, query all servers and consider the certificate 
-  valid only if all servers agree.
+  valid only if all servers agree.  This may be helpful for example if querying
+  multiple Vault performance secondary clusters.
 - `display_name` `(string: "")` - The `display_name` to set on tokens issued
   when authenticating against this CA certificate. If not set, defaults to the
   name of the role.
@@ -341,8 +347,14 @@ Configuration options for the method.
 - `disable_binding` `(boolean: false)` - If set, during renewal, skips the
   matching of presented client identity with the client identity used during
   login.
+<<<<<<< HEAD
 - `ocsp_cache_size` `(int: 100)` - The size of the OCSP response LRU cache.  Note
   that this cache is used for all configured certificates.
+=======
+- `enable_identity_alias_metadata` `(boolean: false)` - If set, metadata of
+  the certificate including the metadata corresponding to
+  `allowed_metadata_extensions` will be stored in the alias
+>>>>>>> origin/main
 
 ### Sample Payload
 
