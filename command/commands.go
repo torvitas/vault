@@ -225,7 +225,7 @@ func initCommands(ui, serverCmdUi cli.Ui, runOpts *RunOptions) {
 			return &AgentCommand{
 				BaseCommand: &BaseCommand{
 					UI:              serverCmdUi,
-					MuteAddrWarning: true,
+					muteAddrWarning: true,
 				},
 				ShutdownCh: MakeShutdownCh(),
 			}, nil
@@ -606,7 +606,7 @@ func initCommands(ui, serverCmdUi cli.Ui, runOpts *RunOptions) {
 					UI:              serverCmdUi,
 					tokenHelper:     runOpts.TokenHelper,
 					flagAddress:     runOpts.Address,
-					MuteAddrWarning: true,
+					muteAddrWarning: true,
 				},
 				AuditBackends:      auditBackends,
 				CredentialBackends: credentialBackends,
