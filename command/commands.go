@@ -224,7 +224,8 @@ func initCommands(ui, serverCmdUi cli.Ui, runOpts *RunOptions) {
 		"agent": func() (cli.Command, error) {
 			return &AgentCommand{
 				BaseCommand: &BaseCommand{
-					UI: serverCmdUi,
+					UI:              serverCmdUi,
+					MuteAddrWarning: true,
 				},
 				ShutdownCh: MakeShutdownCh(),
 			}, nil
@@ -602,9 +603,10 @@ func initCommands(ui, serverCmdUi cli.Ui, runOpts *RunOptions) {
 		"server": func() (cli.Command, error) {
 			return &ServerCommand{
 				BaseCommand: &BaseCommand{
-					UI:          serverCmdUi,
-					tokenHelper: runOpts.TokenHelper,
-					flagAddress: runOpts.Address,
+					UI:              serverCmdUi,
+					tokenHelper:     runOpts.TokenHelper,
+					flagAddress:     runOpts.Address,
+					MuteAddrWarning: true,
 				},
 				AuditBackends:      auditBackends,
 				CredentialBackends: credentialBackends,
