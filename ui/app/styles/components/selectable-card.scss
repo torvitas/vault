@@ -84,6 +84,18 @@
   .vlt-table {
     max-height: 200px;
     overflow-y: auto;
+
+    // On macOS for Chrome, Edge, and Safari the scrollbar does not show. By adding
+    // webkit-scrollbar and thumb we always show the scrollbar depending on overflow
+    &::-webkit-scrollbar {
+      -webkit-appearance: none;
+      width: $spacing-xs;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: $spacing-xxs;
+      background-color: $vault-gray-500;
+    }
   }
 }
 
